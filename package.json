@@ -1,0 +1,35 @@
+{
+  "name": "nan-example-eol",
+  "version": "0.0.1",
+  "description": "newline detection in Node.JS streams implemented as native addon",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodeCharmLtd/node-eol"
+  },
+  "keywords": [
+    "newline",
+    "detection",
+    "streams",
+    "line",
+    "eol"
+  ],
+  "author": "Damian Kaczmarek <damian@codecharm.co.uk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CodeCharmLtd/node-eol/issues"
+  },
+  "homepage": "https://github.com/CodeCharmLtd/node-eol",
+  "dependencies": {
+    "nan": "0.8.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "should": "~3.1.2",
+    "carrier": "~0.1.13",
+    "split": "~0.3.0"
+  }
+}
