@@ -1,4 +1,5 @@
-node-eol
+nan-example-eol
 ========
 
-Blazing fast newline detection in Node.JS streams
+Newline detection in Node.JS implemented as a native addon
+Note: not significantly faster than `carrier` module and much slower than `split` module
