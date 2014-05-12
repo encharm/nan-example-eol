@@ -77,10 +77,10 @@ class EOLFinder : public ObjectWrap {
           memcpy(targetData + chunksOffset, begin, foundSiz);
           chunksOffset += foundSiz;
 
-          onNewLine->Call(NanUndefined(), 1, args);
+          NanMakeCallback(NanGetCurrentContext()->Global(), onNewLine, 1, args);
         } else {  // whole line is inside buffer
           Handle<Value> args[1] = {NanNewBufferHandle(begin, foundSiz)};
-          onNewLine->Call(NanUndefined(), 1, args);
+          NanMakeCallback(NanGetCurrentContext()->Global(), onNewLine, 1, args);
         }
 
         foundCount++;
