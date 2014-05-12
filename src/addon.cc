@@ -54,7 +54,7 @@ class EOLFinder : public ObjectWrap {
         size_t foundSiz = (found - begin);
         size_t tillEnd = siz - foundSiz - 1;
 
-        Local<Function> onNewLine = NanPersistentToLocal(m_onNewLine);
+        Local<Function> onNewLine = NanNew(m_onNewLine);
         sizeWithoutNewline += foundSiz;
 
         if (chunksWithoutNewline > 0) {
@@ -77,10 +77,10 @@ class EOLFinder : public ObjectWrap {
           memcpy(targetData + chunksOffset, begin, foundSiz);
           chunksOffset += foundSiz;
 
-          onNewLine->Call(Context::GetCurrent()->Global(), 1, args);
+          onNewLine->Call(NanUndefined(), 1, args);
         } else {  // whole line is inside buffer
           Handle<Value> args[1] = {NanNewBufferHandle(begin, foundSiz)};
-          onNewLine->Call(Context::GetCurrent()->Global(), 1, args);
+          onNewLine->Call(NanUndefined(), 1, args);
         }
 
         foundCount++;
@@ -114,9 +114,9 @@ class EOLFinder : public ObjectWrap {
     EOLFinder* finder = new EOLFinder();
     finder->Wrap(args.This());
 
-    args.This()->Set(NanSymbol("buffers"), Array::New());
+    args.This()->Set(NanSymbol("buffers"), NanNew<Array>());
 
-    NanAssignPersistent(Function, finder->m_onNewLine, args[0].As<Function>());
+    NanAssignPersistent(finder->m_onNewLine, args[0].As<Function>());
 
     NanReturnValue(args.This());
   }
@@ -141,7 +141,7 @@ class EOLFinder : public ObjectWrap {
         self->chunks.push_back(lastInternal);
 
         Local<Value> last = buffers->Get(buffers->Length() - 1);
-        buffers = Array::New();
+        buffers = NanNew<Array>();
         args.This()->Set(NanSymbol("buffers"), buffers);
         buffers->Set(0, last);
       }
@@ -156,8 +156,8 @@ class EOLFinder : public ObjectWrap {
 
  public:
   static void Init() {
-    Local<FunctionTemplate> tpl = FunctionTemplate::New(EOLFinder::New);
-    NanAssignPersistent(FunctionTemplate, constructor, tpl);
+    Local<FunctionTemplate> tpl = NanNew<FunctionTemplate>(EOLFinder::New);
+    NanAssignPersistent(constructor, tpl);
     tpl->SetClassName(NanSymbol("EOLFinder"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
     NODE_SET_PROTOTYPE_METHOD(tpl, "add", EOLFinder::Add);
@@ -167,7 +167,7 @@ class EOLFinder : public ObjectWrap {
 void Init(Handle<Object> exports, Handle<Object> module) {
   EOLFinder::Init();
   v8::Local<v8::FunctionTemplate> constructorHandle =
-      NanPersistentToLocal(constructor);
+      NanNew(constructor);
 
   module->Set(NanSymbol("exports"), constructorHandle->GetFunction());
 }
